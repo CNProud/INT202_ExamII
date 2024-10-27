@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<h1 th:style="'text-align: center; margin-top: 20px; font-weight: bold;'">Office Details</h1>
+<br>
+<div class = "container p4 m4">
+    <form method="post" action="/offices/update">
+        Office code: <input type="text" readonly name="officeCode" th:value="${office.officeCode}"/><br>
+        City: <input type="text" name="city" th:value="${office.city}"/><br>
+        Phone: <input type="text" name="phone" th:value="${office.phone}"/><br>
+        Address (1): <input type="text" name="addressLine1" th:value="${office.addressLine1}"/><br>
+        Address (2): <input type="text" name="addressLine2" th:value="${office.addressLine2}"/><br>
+        Country: <input type="text" name="country" th:value="${office.country}"/><br>
+        Postal code: <input type="text" name="postalCode" th:value="${office.postalCode}"/><br>
+        Territory: <input type="text" name="territory" value="NA" th:value="${office.territory}"/><br>
+    </form>
+    <hr>
+    <input style="background-color: wheat" type="submit" value="Save"/>
+    <a href="/offices/all"><button style="background-color: darksalmon">Cancel</button></a>
+</div>
+</body>
+</html>
