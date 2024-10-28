@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<div class="container p4 m4">
+    <div class="row w-100">
+        <div class="col-2 h3">Product Listing</div>
+        <div class="col-4 pt-2">
+            <form action="/products/search">
+                <input type="text" size="40px" name="searchParam" th:value="${param.searchParam}"
+                 placeholder="enter any keyword to search product"/>
+                <input type="submit" value="search">
+            </form>
+        </div>
+        <div class="col-6 pt-2">
+            Filter by Price:
+            <form action="/products/searchByPrice">
+                <input type="number" name="lower" min="10.0" max="9999.99" th:value="${param.lower}">
+                <input type="number" name="upper" min="10.0" max="9999.99" th:value="${param.upper}">
+                <input type="submit" value="Filter">
+            </form>
+        </div>
+    </div>
+    <div class="container p4 m4">
+        <hr>
+        <div class="row">
+            <div class="col-1" ><b>Product Code</b></div>
+            <div class="col-3"><b>Product Name</b></div>
+            <div class="col-2"><b>Product Line</b></div>
+            <div class="col-1"><b>Scale</b></div>
+            <div class="col-3"><b>Vendor</b></div>
+            <div class="col-1"><b>Price</b></div>
+        </div>
+        <div class="row p-2" th:each="p : ${page.content}">
+            <div class="col-1" th:text="${p.productCode}"/>
+            <div class="col-3" th:text="${p.productName}"/>
+            <div class="col-2" th:text="${p.productLine.productLine}"/>
+            <div class="col-1" th:text="${p.productScale}"/>
+            <div class="col-3" th:text="${p.productVendor}"/>
+            <div class="col-1" th:text="${p.buyPrice}"/>
+        </div>
+        <hr>
+        <a class="p-2" th:text="${index}"
+           th:href="${'/products/page?pageSize=10&pageNumber=' + (index - 1)}"
+           th:each="index: ${#numbers.sequence(1, page.totalPages)}"/>
+        <a href="/home"><button>Home</button></a>
+        <span style="margin-left: 20px; margin-right: 20px"> | </span>
+        <a href="#">
+            <button style="background-color: darksalmon;">Add New Product</button>
+        </a>
+    </div>
+</div>
+</body>
+</html>

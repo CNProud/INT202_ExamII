@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Product Listing</h1>
+
+    <div class="row mb-3">
+        <h2 class="mb-4">Normal Search</h2>
+        <div class="col-md-6">
+            <form action="/products/search" class="d-flex">
+                <input type="text" class="form-control me-2" name="searchParam" th:value="${param.searchParam}" placeholder="Enter a keyword to search product" aria-label="Search">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form action="/products/searchByPrice" class="d-flex">
+                <input type="number" class="form-control me-2" name="lower" min="10.0" max="9999.99" th:value="${param.lower}" placeholder="Min Price">
+                <input type="number" class="form-control me-2" name="upper" min="10.0" max="9999.99" th:value="${param.upper}" placeholder="Max Price">
+                <button class="btn btn-secondary" type="submit">Filter</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <h2 class="mb-4">Better Search</h2>
+        <div class="col-md-12">
+            <form action="/products/searchByContentAndPrice" class="d-flex">
+                <input type="text" class="form-control me-2" name="searchParam" th:value="${param.searchParam}" placeholder="Enter a keyword to search product">
+                <input type="number" class="form-control me-2" name="lower" min="10.0" max="9999.99" th:value="${param.lower}" placeholder="Min Price">
+                <input type="number" class="form-control me-2" name="upper" min="10.0" max="9999.99" th:value="${param.upper}" placeholder="Max Price">
+                <button class="btn btn-info" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12" th:if="${page == null or page.getContent().isEmpty()}">
+            <p class="text-danger fw-bold">Product does not exist!</p>
+        </div>
+        <div class="col-12" th:if="${page != null and !page.getContent().isEmpty()}">
+            <div class="row fw-bold">
+                <div class="col-2">Product Code</div>
+                <div class="col-3">Product Name</div>
+<!--                <div class="col-2">Product Line</div>-->
+                <div class="col-1">Scale</div>
+                <div class="col-3">Vendor</div>
+                <div class="col-1">Price</div>
+            </div>
+            <div class="row" th:each="p : ${page.getContent()}">
+                <div class="col-2" ><a th:href="@{'/products/product_details?productCode=' + ${p.productCode}}" th:text="${p.productCode}"/></div>
+                <div class="col-3" th:text="${p.productName}"></div>
+<!--                <div class="col-2" th:text="${p.productLine}"></div>-->
+                <div class="col-1" th:text="${p.productScale}"></div>
+                <div class="col-3" th:text="${p.productVendor}"></div>
+                <div class="col-1" th:text="${p.buyPrice}"></div>
+                <div class="col-1">
+                    <a th:href="@{'/products/delete?productCode=' + ${p.productCode}}">
+                        <button style="color: Orange; margin-left: 10px"> X </button>
+                    </a>
+                    <a th:href="@{'/products/update?productCode=' + ${p.productCode}}">
+                        <button style="color: blue; margin-left: 10px"> U </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Pagination Controls -->
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <ul class="pagination justify-content-center">
+                <!-- Page Number Links -->
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                    <a class="page-link"
+                       th:classappend="${i == (page.number != null ? page.number : 0)} ? 'active' : ''"
+                       th:href="@{/products/search(pageNumber=${i}, pageSize=${page.size}, searchParam=${param.searchParam}, lower=${param.lower}, upper=${param.upper})}"
+                       th:text="${i + 1}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+        <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="/home" class="btn btn-primary">Home</a>
+            <span class="mx-2"> | </span>
+            <a href="/products/add" class="btn btn-danger">Add New Product</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
